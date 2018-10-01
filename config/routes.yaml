@@ -1,0 +1,21 @@
+index:
+    path: /
+    controller: App\Controller\DefaultController::index
+
+teacher:
+    path: /teacher
+    controller: App\Controller\DefaultController::teacher
+
+student:
+    path: /student
+    controller: App\Controller\DefaultController::student
+
+routeLevelControl:
+    path: /routeLevelControl
+    controller: App\Controller\DefaultController::LevelControl
+
+login:
+    path: /login
+
+logout:
+    path: /logout

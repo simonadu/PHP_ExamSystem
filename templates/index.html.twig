@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    index page
+    |
+    <a href="{{ path('teacher') }}">Link to teacher mode</a>
+    |
+    <a href="{{ path('student') }}">Link to student mode</a>
+    |
+
+    <div>
+        <form action="{{ path('login') }}" method="POST">
+            Username: <input type="text" id="username" name="_username" /><br>
+            Password: <input type="text" id="password" name="_password" /> <br>
+
+            <button type="submit">Login</button>
+        </form>
+    </div>
+
+{% endblock %}
