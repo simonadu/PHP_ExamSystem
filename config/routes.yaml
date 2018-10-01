@@ -10,6 +10,10 @@ student:
     path: /student
     controller: App\Controller\DefaultController::student
 
+createQuestion:
+    path: /teacher/create/question
+    controller: App\Controller\DefaultController::createQuestion
+
 routeLevelControl:
     path: /routeLevelControl
     controller: App\Controller\DefaultController::LevelControl
