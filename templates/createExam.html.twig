@@ -2,27 +2,27 @@
 
 {% block body %}
 
-    <h2> create answer </h2>
+    <h2> create exams </h2>
 
     <div>
-        {{ form_start(addAnswerForm) }}
-        {{ form_widget(addAnswerForm) }}
-        {{ form_end(addAnswerForm) }}
+        {{ form_start(addExamForm) }}
+        {{ form_widget(addExamForm) }}
+        {{ form_end(addExamForm) }}
     </div>
 
     <div>
         <table>
             <thead>
             <tr>
-                <th>Answer</th>
-                <th>Correctness</th>
+                <th>Field</th>
+                <th>Description</th>
             </tr>
             </thead>
             <tbody>
-            {% for answer in answers %}
+            {% for exam in exams %}
                 <tr>
-                    <td>{{ answer.name }} </td>
-                    <td> {% if answer.correct %} correct {% else %} incorrect {% endif %} </td>
+                    <td>{{ exam.field.name  }} </td>
+                    <td>{{ exam.name }} </td>
                 </tr>
             {% endfor %}
             </tbody>

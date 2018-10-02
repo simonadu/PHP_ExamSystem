@@ -15,6 +15,7 @@
             <thead>
             <tr>
                 <th>Question</th>
+                <th>Field</th>
                 <th>Actions</th>
             </tr>
             </thead>
@@ -22,11 +23,16 @@
             {% for question in questions %}
                 <tr>
                     <td>{{ question.name }} </td>
+                    <td>{{ question.field.name }} </td>
                     <td><a href="{{ path('createAnswer', {'qId': question.id}) }}">Create answers</a> </td>
                 </tr>
             {% endfor %}
             </tbody>
         </table>
+    </div>
+
+    <div>
+        <a href="{{ path('teacher') }}"> Back </a>
     </div>
 
     <div>

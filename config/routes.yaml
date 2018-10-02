@@ -14,6 +14,10 @@ createQuestion:
     path: /teacher/questions
     controller: App\Controller\DefaultController::createQuestion
 
+createExam:
+    path: /teacher/exams
+    controller: App\Controller\DefaultController::createExam
+
 createAnswer:
     path: /teacher/questions/answers/{qId}
     controller: App\Controller\DefaultController::createAnswer

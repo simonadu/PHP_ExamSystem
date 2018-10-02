@@ -39,9 +39,15 @@ class User implements UserInterface
      */
     private $questions;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Exam", mappedBy="teacher")
+     */
+    private $exams;
+
     public function __construct()
     {
         $this->questions = new ArrayCollection();
+        $this->exams = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -129,6 +135,37 @@ class User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($question->getTeacher() === $this) {
                 $question->setTeacher(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Exam[]
+     */
+    public function getExams(): Collection
+    {
+        return $this->exams;
+    }
+
+    public function addExam(Exam $exam): self
+    {
+        if (!$this->exams->contains($exam)) {
+            $this->exams[] = $exam;
+            $exam->setTeacher($this);
+        }
+
+        return $this;
+    }
+
+    public function removeExam(Exam $exam): self
+    {
+        if ($this->exams->contains($exam)) {
+            $this->exams->removeElement($exam);
+            // set the owning side to null (unless already changed)
+            if ($exam->getTeacher() === $this) {
+                $exam->setTeacher(null);
             }
         }
 

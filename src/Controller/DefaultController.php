@@ -2,11 +2,13 @@
 
 namespace App\Controller;
 use App\Entity\Answer;
+use App\Entity\Exam;
 use App\Entity\Field;
 use App\Entity\Question;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\FrameworkBundle\Tests\Fixtures\Validation\Category;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
@@ -44,10 +46,11 @@ class DefaultController extends AbstractController
         $newQuestion = new Question();
         $form = $this->createFormBuilder($newQuestion)
             ->add('field', EntityType::class, array('class'=> Field::class, 'choice_label' => 'name'))
-            ->add('name', TextType::class)
-            ->add('save', SubmitType::class, array('label' => 'Add new'))
+            ->add('name', TextType::class, array('label' => 'Question'))
+            ->add('save', SubmitType::class, array('label' => 'Add'))
             ->getForm();
         $form->handleRequest($request);
+
         if($form->isSubmitted())
         {
             $newQuestion = $form->getData();
@@ -56,7 +59,7 @@ class DefaultController extends AbstractController
             $entityManager->persist($newQuestion);
             $entityManager->flush();
 
-            return $this->redirectToRoute('createAnswer');
+            return $this->redirectToRoute('createQuestion');
         }
 
         $questions = $this->getUser()->getQuestions();
@@ -70,6 +73,9 @@ class DefaultController extends AbstractController
         $newAnswer = new Answer();
         $form = $this->createFormBuilder($newAnswer)
             ->add('name', TextType::class, array('label' => 'Answer'))
+            ->add('correct', CheckboxType::class, array(
+                'label'    => 'Is this answer correct?',
+                'required' => false,))
             ->add('save', SubmitType::class, array('label' => 'Add new'))
             ->getForm();
         $form->handleRequest($request);
@@ -79,7 +85,6 @@ class DefaultController extends AbstractController
         if($form->isSubmitted() && $form->isValid())
         {
             $newAnswer = $form->getData();
-            $newAnswer->setCorrect(0);
             $newAnswer->setQuestion($question);
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($newAnswer);
@@ -87,9 +92,38 @@ class DefaultController extends AbstractController
 
             return $this->redirectToRoute('createAnswer', array('qId' => $qId));
         }
+
+        $answers=$question->getAnswers();
         return $this->render('createAnswer.html.twig',
-            array('answers' => $newAnswer,
+            array('answers' => $answers,
                 'addAnswerForm' => $form->createView()));
+    }
+
+    public function createExam (Request $request)
+    {
+        $newExam = new Exam();
+        $form = $this->createFormBuilder($newExam)
+            ->add('field', EntityType::class, array('class'=> Field::class, 'choice_label' => 'name'))
+            ->add('name', TextType::class, array('label' => 'Exam description'))
+            ->add('save', SubmitType::class, array('label' => 'Add'))
+            ->getForm();
+        $form->handleRequest($request);
+
+        if($form->isSubmitted())
+        {
+            $newExam = $form->getData();
+            $newExam->setTeacher($this->getUser());
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($newExam);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('createExam');
+        }
+
+        $exams = $this->getUser()->getExams();
+        return $this->render('createExam.html.twig',
+            array('exams' => $exams,
+                'addExamForm' => $form->createView()));
     }
 
 }
