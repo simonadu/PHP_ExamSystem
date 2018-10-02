@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <h2> create answer </h2>
+
+    <div>
+        {{ form_start(addAnswerForm) }}
+        {{ form_widget(addAnswerForm) }}
+        {{ form_end(addAnswerForm) }}
+    </div>
+
+
+    <div>
+        <a href="{{ path('logout') }}">Logout</a>
+    </div>
+
+
+{% endblock %}

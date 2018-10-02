@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Controller;
+use App\Entity\Answer;
 use App\Entity\Field;
 use App\Entity\Question;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -55,7 +56,7 @@ class DefaultController extends AbstractController
             $entityManager->persist($newQuestion);
             $entityManager->flush();
 
-            return $this->redirectToRoute('teacher');
+            return $this->redirectToRoute('createAnswer');
         }
 
         $questions = $this->getUser()->getQuestions();
@@ -64,6 +65,31 @@ class DefaultController extends AbstractController
                 'addQuestionForm' => $form->createView()));
     }
 
+    public function createAnswer (Request $request,$qId)
+    {
+        $newAnswer = new Answer();
+        $form = $this->createFormBuilder($newAnswer)
+            ->add('name', TextType::class, array('label' => 'Answer'))
+            ->add('save', SubmitType::class, array('label' => 'Add new'))
+            ->getForm();
+        $form->handleRequest($request);
 
+        $question= $this->getDoctrine()->getRepository(Question::class)->find($qId);
+
+        if($form->isSubmitted() && $form->isValid())
+        {
+            $newAnswer = $form->getData();
+            $newAnswer->setCorrect(0);
+            $newAnswer->setQuestion($question);
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($newAnswer);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('createAnswer', array('qId' => $qId));
+        }
+        return $this->render('createAnswer.html.twig',
+            array('answers' => $newAnswer,
+                'addAnswerForm' => $form->createView()));
+    }
 
 }

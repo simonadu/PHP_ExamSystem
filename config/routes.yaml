@@ -11,8 +11,12 @@ student:
     controller: App\Controller\DefaultController::student
 
 createQuestion:
-    path: /teacher/create/question
+    path: /teacher/questions
     controller: App\Controller\DefaultController::createQuestion
+
+createAnswer:
+    path: /teacher/questions/answers/{qId}
+    controller: App\Controller\DefaultController::createAnswer
 
 routeLevelControl:
     path: /routeLevelControl
