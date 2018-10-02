@@ -45,7 +45,9 @@ class DefaultController extends AbstractController
     {
         $newQuestion = new Question();
         $form = $this->createFormBuilder($newQuestion)
-            ->add('field', EntityType::class, array('class'=> Field::class, 'choice_label' => 'name'))
+            ->add('field', EntityType::class, array(
+                'class'=> Field::class,
+                'choice_label' => 'name'))
             ->add('name', TextType::class, array('label' => 'Question'))
             ->add('save', SubmitType::class, array('label' => 'Add'))
             ->getForm();
@@ -124,6 +126,35 @@ class DefaultController extends AbstractController
         return $this->render('createExam.html.twig',
             array('exams' => $exams,
                 'addExamForm' => $form->createView()));
+    }
+
+    public function examQuestion (Request $request, $eId)
+    {
+        $exam= $this->getDoctrine()->getRepository(Exam::class)->find($eId);
+        $form = $this->createFormBuilder($exam)
+            ->add('questions', EntityType::class, array(
+                'class'=> Question::class, 'choice_label' => 'name',
+                'choices'=>$exam->getField()->getQuestions(),
+                'expanded'=>true, 'multiple'=> true,
+            ))
+            ->add('save', SubmitType::class, array('label' => 'Add'))
+            ->getForm();
+        $form->handleRequest($request);
+
+        if($form->isSubmitted())
+        {
+            $exam = $form->getData();
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($exam);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('createExam');
+        }
+
+        return $this->render('examQuestion.html.twig',
+            array('questions' => $exam,
+                'addQuestionForm' => $form->createView())
+        );
     }
 
 }

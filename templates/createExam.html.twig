@@ -16,6 +16,7 @@
             <tr>
                 <th>Field</th>
                 <th>Description</th>
+                <th> Actions </th>
             </tr>
             </thead>
             <tbody>
@@ -23,6 +24,7 @@
                 <tr>
                     <td>{{ exam.field.name  }} </td>
                     <td>{{ exam.name }} </td>
+                    <td><a href="{{ path('examQuestion', {'eId': exam.id}) }}">Add questions</a>  </td>
                 </tr>
             {% endfor %}
             </tbody>

@@ -22,6 +22,10 @@ createAnswer:
     path: /teacher/questions/answers/{qId}
     controller: App\Controller\DefaultController::createAnswer
 
+examQuestion:
+    path: /teacher/exams/question/{eId}
+    controller: App\Controller\DefaultController::examQuestion
+
 routeLevelControl:
     path: /routeLevelControl
     controller: App\Controller\DefaultController::LevelControl
