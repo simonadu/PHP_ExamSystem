@@ -40,9 +40,20 @@ class Exam
      */
     private $name;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="examStudents")
+     */
+    private $student;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\StudentA", mappedBy="exam")
+     */
+    private $studentAs;
+
     public function __construct()
     {
         $this->questions = new ArrayCollection();
+        $this->studentAs = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -108,6 +119,49 @@ class Exam
     public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function getStudent(): ?User
+    {
+        return $this->student;
+    }
+
+    public function setStudent(?User $student): self
+    {
+        $this->student = $student;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|StudentA[]
+     */
+    public function getStudentAs(): Collection
+    {
+        return $this->studentAs;
+    }
+
+    public function addStudentA(StudentA $studentA): self
+    {
+        if (!$this->studentAs->contains($studentA)) {
+            $this->studentAs[] = $studentA;
+            $studentA->setExam($this);
+        }
+
+        return $this;
+    }
+
+    public function removeStudentA(StudentA $studentA): self
+    {
+        if ($this->studentAs->contains($studentA)) {
+            $this->studentAs->removeElement($studentA);
+            // set the owning side to null (unless already changed)
+            if ($studentA->getExam() === $this) {
+                $studentA->setExam(null);
+            }
+        }
 
         return $this;
     }

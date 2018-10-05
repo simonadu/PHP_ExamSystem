@@ -6,9 +6,7 @@ teacher:
     path: /teacher
     controller: App\Controller\DefaultController::teacher
 
-student:
-    path: /student
-    controller: App\Controller\DefaultController::student
+
 
 createQuestion:
     path: /teacher/questions
@@ -26,9 +24,26 @@ examQuestion:
     path: /teacher/exams/question/{eId}
     controller: App\Controller\DefaultController::examQuestion
 
+randomSelection:
+    path: /teacher/exams/random/selection/{eId}
+    controller: App\Controller\DefaultController::randomSelection
+
 routeLevelControl:
     path: /routeLevelControl
     controller: App\Controller\DefaultController::LevelControl
+
+student:
+    path: /student
+    controller: App\Controller\DefaultController::student
+
+takeExam:
+    path: /student/takeExam/{eId}
+    controller: App\Controller\DefaultController::takeExam
+
+
+submitAnswers:
+    path: /student/submitAnswers/{eId}
+    controller: App\Controller\DefaultController::submitAnswers
 
 login:
     path: /login

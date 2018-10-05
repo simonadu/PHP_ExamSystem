@@ -44,11 +44,25 @@ class User implements UserInterface
      */
     private $exams;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Exam", mappedBy="student")
+     */
+    private $examStudents;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\StudentA", mappedBy="student")
+     */
+    private $studentAs;
+
     public function __construct()
     {
         $this->questions = new ArrayCollection();
         $this->exams = new ArrayCollection();
+        $this->examStudents = new ArrayCollection();
+        $this->studentAs = new ArrayCollection();
     }
+
+
 
     public function getId(): ?int
     {
@@ -166,6 +180,68 @@ class User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($exam->getTeacher() === $this) {
                 $exam->setTeacher(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Exam[]
+     */
+    public function getExamStudents(): Collection
+    {
+        return $this->examStudents;
+    }
+
+    public function addExamStudent(Exam $examStudent): self
+    {
+        if (!$this->examStudents->contains($examStudent)) {
+            $this->examStudents[] = $examStudent;
+            $examStudent->setStudent($this);
+        }
+
+        return $this;
+    }
+
+    public function removeExamStudent(Exam $examStudent): self
+    {
+        if ($this->examStudents->contains($examStudent)) {
+            $this->examStudents->removeElement($examStudent);
+            // set the owning side to null (unless already changed)
+            if ($examStudent->getStudent() === $this) {
+                $examStudent->setStudent(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|StudentA[]
+     */
+    public function getStudentAs(): Collection
+    {
+        return $this->studentAs;
+    }
+
+    public function addStudentA(StudentA $studentA): self
+    {
+        if (!$this->studentAs->contains($studentA)) {
+            $this->studentAs[] = $studentA;
+            $studentA->setStudent($this);
+        }
+
+        return $this;
+    }
+
+    public function removeStudentA(StudentA $studentA): self
+    {
+        if ($this->studentAs->contains($studentA)) {
+            $this->studentAs->removeElement($studentA);
+            // set the owning side to null (unless already changed)
+            if ($studentA->getStudent() === $this) {
+                $studentA->setStudent(null);
             }
         }
 

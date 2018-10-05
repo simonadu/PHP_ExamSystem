@@ -2,6 +2,10 @@
 
 {% block body %}
 
+    <div>
+        <a href="{{ path('teacher') }}"> << Back </a>
+    </div>
+
     <h2> create exams </h2>
 
     <div>
@@ -16,7 +20,8 @@
             <tr>
                 <th>Field</th>
                 <th>Description</th>
-                <th> Actions </th>
+                <th> Details </th>
+                <!-- <th> Random questions </th>  -->
             </tr>
             </thead>
             <tbody>
@@ -24,15 +29,20 @@
                 <tr>
                     <td>{{ exam.field.name  }} </td>
                     <td>{{ exam.name }} </td>
-                    <td><a href="{{ path('examQuestion', {'eId': exam.id}) }}">Add questions</a>  </td>
+                    <td> <a href="{{ path('examQuestion', {'eId': exam.id}) }}">Edit exam</a> </td>
+                  <!--  <td>
+                        Select random questions =>
+                        <form action="{{ path('randomSelection', {'eId': exam.id}) }}" method="post">
+                            number
+                            <input type="number" name="randomNumber" id="number">
+                            <button type="submit">Generate</button>
+                        </form>
+                    </td>
+                 -->
                 </tr>
             {% endfor %}
             </tbody>
         </table>
-    </div>
-
-    <div>
-        <a href="{{ path('teacher') }}"> Back </a>
     </div>
 
     <div>

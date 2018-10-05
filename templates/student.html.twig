@@ -2,6 +2,32 @@
 
 {% block body %}
 
-    student page
+    <h2> student page </h2>
+    <h3> available exams </h3>
+    <div>
+        <table>
+            <thead>
+            <tr>
+                <th>Field</th>
+                <th>Description</th>
+                <th> Details </th>
+                <!-- <th> Random questions </th>  -->
+            </tr>
+            </thead>
+            <tbody>
+            Exams only for you
+            {% for exam in exams %}
+                <tr>
+                    <td>{{ exam.field.name  }} </td>
+                    <td>{{ exam.name }} </td>
+                    <td>
+                        <a href="{{ path('takeExam', {'eId': exam.id}) }}">take exam</a>
+                    </td>
+                </tr>
+            {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
 
 {% endblock %}
