@@ -2,6 +2,15 @@
 
 {% block body %}
 
+
+    <ul>
+        <li><a class="active" href="">Tecaher</a></li>
+        <li><a href="{{ path('createQuestion') }}"> Questions </a></li>
+        <li><a href="{{ path('createExam') }}"> Exams </a> </li>
+        <li><a href="">Results</a></li>
+        <li style="float:right"><a href="{{ path('logout') }}">Log out</a></li>
+    </ul>
+
     <div>
         <a href="{{ path('teacher') }}"> << Back </a>
     </div>
@@ -15,7 +24,7 @@
     </div>
 
     <div>
-        <table>
+        <table id="customers">
             <thead>
             <tr>
                 <th>Field</th>
@@ -45,9 +54,6 @@
         </table>
     </div>
 
-    <div>
-        <a href="{{ path('logout') }}">Logout</a>
-    </div>
 
 
 {% endblock %}

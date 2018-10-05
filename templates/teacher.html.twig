@@ -2,8 +2,14 @@
 
 {% block body %}
 
-    <h2> teacher page </h2>
-    <h4> <a href="{{ path('createQuestion') }}">create question</a> </h4>
-    <h4> <a href="{{ path('createExam') }}">create exams</a> </h4>
+    <ul>
+        <li><a class="active" href="">Tecaher</a></li>
+        <li><a href="{{ path('createQuestion') }}"> Questions </a></li>
+        <li><a href="{{ path('createExam') }}"> Exams </a> </li>
+        <li><a href="">Results</a></li>
+        <li style="float:right"><a href="{{ path('logout') }}">Log out</a></li>
+
+    </ul>
+    logged as teacher
 
 {% endblock %}

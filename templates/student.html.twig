@@ -2,10 +2,15 @@
 
 {% block body %}
 
-    <h2> student page </h2>
-    <h3> available exams </h3>
+    <ul>
+        <li><a href=""> Student </a> </li>
+        <li><a href="">Results</a></li>
+        <li style="float:right"><a href="{{ path('logout') }}">Log out</a></li>
+    </ul>
+
+    <h2> available exams </h2>
     <div>
-        <table>
+        <table id="customers">
             <thead>
             <tr>
                 <th>Field</th>
@@ -15,7 +20,6 @@
             </tr>
             </thead>
             <tbody>
-            Exams only for you
             {% for exam in exams %}
                 <tr>
                     <td>{{ exam.field.name  }} </td>
