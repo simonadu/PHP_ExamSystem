@@ -4,7 +4,7 @@
 
 
     <ul>
-        <li><a class="active" href="">Tecaher</a></li>
+        <li><a href="{{ path('teacher')}}">Teacher</a></li>
         <li><a href="{{ path('createQuestion') }}"> Questions </a></li>
         <li><a href="{{ path('createExam') }}"> Exams </a> </li>
         <li><a href="{{ path('teacherResult') }}">Results</a></li>
@@ -12,9 +12,6 @@
 
     </ul>
 
-    <div>
-        <a href="{{ path('teacher') }}"> << Back </a>
-    </div>
 
 
     <h2> create question </h2>
@@ -24,6 +21,8 @@
         {{ form_widget(addQuestionForm) }}
         {{ form_end(addQuestionForm) }}
     </div>
+
+    <br>
 
     <div>
         <table id="customers">

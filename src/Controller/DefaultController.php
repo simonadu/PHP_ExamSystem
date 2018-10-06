@@ -222,13 +222,7 @@ class DefaultController extends AbstractController
         $exam->setResult($result/$count);
         $entityManager->flush();
 
-        return $this->render('SResult.html.twig');
-
-    }
-
-    public function studentResult()
-    {
-        return $this->render('SResult.html.twig');
+        return $this->render('student.html.twig');
 
     }
 

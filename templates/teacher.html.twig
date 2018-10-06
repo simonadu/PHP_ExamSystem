@@ -3,13 +3,20 @@
 {% block body %}
 
     <ul>
-        <li><a class="active" href="">Tecaher</a></li>
+        <li><a class="active" href="{{ path('teacher') }}">Teacher</a></li>
         <li><a href="{{ path('createQuestion') }}"> Questions </a></li>
         <li><a href="{{ path('createExam') }}"> Exams </a> </li>
-        <li><a href="">Results</a></li>
+        <li><a href="{{ path('teacherResult') }}">Results</a></li>
         <li style="float:right"><a href="{{ path('logout') }}">Log out</a></li>
 
     </ul>
-    logged as teacher
+
+    <br>
+
+    <div>
+
+        TEACHER PAGE
+
+    </div>
 
 {% endblock %}

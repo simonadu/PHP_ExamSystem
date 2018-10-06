@@ -3,7 +3,7 @@
 {% block body %}
 
     <ul>
-        <li><a class="active" href="">Tecaher</a></li>
+        <li><a class="active" href="{{ path('teacher') }}">Teacher</a></li>
         <li><a href="{{ path('createQuestion') }}"> Questions </a></li>
         <li><a href="{{ path('createExam') }}"> Exams </a> </li>
         <li><a href="{{ path('teacherResult') }}">Results</a></li>
@@ -11,9 +11,6 @@
 
     </ul>
 
-    <div>
-        <a href="{{ path('teacher') }}"> << Back </a>
-    </div>
 
     <h2> create answer </h2>
 
@@ -23,6 +20,7 @@
         {{ form_end(addAnswerForm) }}
     </div>
 
+    <br>
     <div>
         <table id="customers">
             <thead>
@@ -42,9 +40,6 @@
         </table>
     </div>
 
-    <div>
-        <a href="{{ path('logout') }}">Logout</a>
-    </div>
 
 
 {% endblock %}
