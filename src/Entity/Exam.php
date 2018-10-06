@@ -50,6 +50,16 @@ class Exam
      */
     private $studentAs;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $status;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $result;
+
     public function __construct()
     {
         $this->questions = new ArrayCollection();
@@ -162,6 +172,30 @@ class Exam
                 $studentA->setExam(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getStatus(): ?bool
+    {
+        return $this->status;
+    }
+
+    public function setStatus(bool $status): self
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    public function getResult(): ?float
+    {
+        return $this->result;
+    }
+
+    public function setResult(?float $result): self
+    {
+        $this->result = $result;
 
         return $this;
     }

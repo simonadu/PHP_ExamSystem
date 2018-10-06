@@ -6,8 +6,6 @@ teacher:
     path: /teacher
     controller: App\Controller\DefaultController::teacher
 
-
-
 createQuestion:
     path: /teacher/questions
     controller: App\Controller\DefaultController::createQuestion
@@ -44,6 +42,14 @@ takeExam:
 submitAnswers:
     path: /student/submitAnswers/{eId}
     controller: App\Controller\DefaultController::submitAnswers
+
+teacherResult:
+    path: /teacher/result/
+    controller: App\Controller\DefaultController::teacherResult
+
+viewResult:
+    path: /common/view/{eId}
+    controller: App\Controller\DefaultController::viewResult
 
 login:
     path: /login

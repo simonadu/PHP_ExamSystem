@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <ul>
+        <li><a href=""> Student </a> </li>
+        <li><a href="">Results</a></li>
+        <li style="float:right"><a href="{{ path('logout') }}">Log out</a></li>
+    </ul>
+
+    <h2> Results </h2>
+    <div>
+        <table id="customers">
+            <thead>
+            <tr>
+                <th>Question</th>
+                <th>Your answer</th>
+                <th>Correct answer</th>
+                <th>Points</th>
+                <!-- <th> Random questions </th>  -->
+            </tr>
+            </thead>
+            <tbody>
+            {% for answer in answers %}
+                <tr>
+                    <td> {{ answer.question.name }}</td>
+                    <td> {{ answer.answer.name }}</td>
+                    <td> nn </td>
+                    <td> {% if answer.answer.correct== true %} 1 {% else %} O {% endif %}</td>
+                </tr>
+            {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}
+
+

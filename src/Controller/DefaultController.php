@@ -112,6 +112,8 @@ class DefaultController extends AbstractController
         if ($form->isSubmitted()) {
             $newExam = $form->getData();
             $newExam->setTeacher($this->getUser());
+            $newExam->setStatus(false);
+            $newExam->setResult(null);
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($newExam);
             $entityManager->flush();
@@ -175,12 +177,17 @@ class DefaultController extends AbstractController
     public function takeExam($eId)
     {
         $exam = $this->getDoctrine()->getRepository(Exam::class)->find($eId);
+        $entityManager = $this->getDoctrine()->getManager();
+        $exam->setStatus(true);
+        $entityManager->flush();
+
         $questions = $exam->getQuestions();
 
         return $this->render('takeExam.html.twig',
             array('questions' => $questions,
                 'exam'=>$exam)
         );
+
     }
 
     public function submitAnswers(Request $request, $eId)
@@ -188,6 +195,10 @@ class DefaultController extends AbstractController
 
         $request = Request::createFromGlobals()->request->all();
         $exam= $this->getDoctrine()->getRepository(Exam::class)->find($eId);
+        $result=('0');
+        $count=('0');
+        $entityManager = $this->getDoctrine()->getManager();
+
 
 
         foreach ($request as $questionId => $answerId){
@@ -198,19 +209,57 @@ class DefaultController extends AbstractController
             $studentAnswer= new StudentA();
             $studentAnswer->setStudent($this->getUser());
             $studentAnswer->setAnswer($answer);
+            $correct= $answer->getCorrect();
+            if ($correct==true) $result++;
             $studentAnswer->setExam($exam);
             $studentAnswer->setQuestion($question);
-            $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($studentAnswer);
+            $count++;
         }
 
-            $entityManager->flush();
-
+        $entityManager->flush();
+        $entityManager = $this->getDoctrine()->getManager();
+        $exam->setResult($result/$count);
+        $entityManager->flush();
 
         return $this->render('SResult.html.twig');
 
     }
 
+    public function studentResult()
+    {
+        return $this->render('SResult.html.twig');
+
+    }
+
+    public function teacherResult()
+    {
+        $teacher= $this->getUser()->getId();
+        $exams= $this->getDoctrine()->getRepository(Exam::class)->findBy(['teacher'=>$this->getUser()]);
+
+
+        return $this->render('TResults.html.twig',
+            array('exams' => $exams ));
+    }
+
+    public function viewResult($eId)
+    {
+        $exam = $this->getDoctrine()->getRepository(Exam::class)->find($eId);
+        $answers = $this->getDoctrine()->getRepository(StudentA::class)->findBy(['exam'=>$eId]);
+
+        $isTeacher = $this->getUser()->getLevel();
+
+        if ($isTeacher == true){
+            return $this->render('TViewResult.html.twig',
+            array('answers' => $answers,
+                'exam' => $exam));
+        }
+        else {
+            return $this->render('viewResult.html.twig',
+                array('answers' => $answers,
+                    'exam' => $exam));
+        }
+    }
 
 /**
    public function randomSelection(ObjectManager $manager, Request $request, $eId)

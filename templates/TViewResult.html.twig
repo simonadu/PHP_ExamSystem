@@ -2,49 +2,39 @@
 
 {% block body %}
 
-
     <ul>
         <li><a class="active" href="">Tecaher</a></li>
         <li><a href="{{ path('createQuestion') }}"> Questions </a></li>
         <li><a href="{{ path('createExam') }}"> Exams </a> </li>
         <li><a href="{{ path('teacherResult') }}">Results</a></li>
         <li style="float:right"><a href="{{ path('logout') }}">Log out</a></li>
-
     </ul>
 
-    <div>
-        <a href="{{ path('teacher') }}"> << Back </a>
-    </div>
-
-
-    <h2> create question </h2>
-
-    <div>
-        {{ form_start(addQuestionForm) }}
-        {{ form_widget(addQuestionForm) }}
-        {{ form_end(addQuestionForm) }}
-    </div>
-
+    <h2> Results </h2>
+    <h3> {{ exam.student.username}} - {{ exam.field.name }} - {{ exam.name }} </h3>
     <div>
         <table id="customers">
             <thead>
             <tr>
                 <th>Question</th>
-                <th>Field</th>
-                <th>Actions</th>
+                <th>Submitted answer</th>
+                <th>Points</th>
+                <!-- <th> Random questions </th>  -->
             </tr>
             </thead>
             <tbody>
-            {% for question in questions %}
+            {% for answer in answers %}
                 <tr>
-                    <td>{{ question.name }} </td>
-                    <td>{{ question.field.name }} </td>
-                    <td><a href="{{ path('createAnswer', {'qId': question.id}) }}">Create answers</a> </td>
+                    <td> {{ answer.question.name }}</td>
+                    <td> {{ answer.answer.name }}</td>
+                    <td> {% if answer.answer.correct== true %} 1 {% else %} O {% endif %}</td>
                 </tr>
             {% endfor %}
+
             </tbody>
         </table>
     </div>
 
-
 {% endblock %}
+
+

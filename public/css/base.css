@@ -2,19 +2,29 @@ body {
     background: whitesmoke;
 }
 
+h1{
+    color: darkcyan;
+}
+
 h2{
     color: darkcyan;
 }
 
-h4{
-    color:darkcyan;
+h3{
+    color: darkcyan;
 }
 
-.login{
-    padding: 30px;
-    width: 35%;
-    background-color: darkcyan;
-    margin: 15%;
+h4{
+    color: darkcyan;
+}
+
+
+
+.center {
+    padding: 70px 0;
+    border: 8px solid darkcyan;
+    background-color: white;
+    text-align: center;
 }
 
 ul {
