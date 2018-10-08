@@ -60,10 +60,16 @@ class Exam
      */
     private $result;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\ExamAll", mappedBy="exam")
+     */
+    private $examAlls;
+
     public function __construct()
     {
         $this->questions = new ArrayCollection();
         $this->studentAs = new ArrayCollection();
+        $this->examAlls = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -196,6 +202,37 @@ class Exam
     public function setResult(?float $result): self
     {
         $this->result = $result;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ExamAll[]
+     */
+    public function getExamAlls(): Collection
+    {
+        return $this->examAlls;
+    }
+
+    public function addExamAll(ExamAll $examAll): self
+    {
+        if (!$this->examAlls->contains($examAll)) {
+            $this->examAlls[] = $examAll;
+            $examAll->setExam($this);
+        }
+
+        return $this;
+    }
+
+    public function removeExamAll(ExamAll $examAll): self
+    {
+        if ($this->examAlls->contains($examAll)) {
+            $this->examAlls->removeElement($examAll);
+            // set the owning side to null (unless already changed)
+            if ($examAll->getExam() === $this) {
+                $examAll->setExam(null);
+            }
+        }
 
         return $this;
     }

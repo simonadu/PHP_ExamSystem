@@ -10,30 +10,38 @@
         <li style="float:right"><a href="{{ path('logout') }}">Log out</a></li>
     </ul>
 
-    <h2> Results </h2>
-    {# <h3> {{ exam.student.username}} - {{ exam.field.name }} - {{ exam.name }} </h3> #}
+    <h2> Results</h2>
     <div>
         <table id="customers">
             <thead>
             <tr>
-                <th>Question</th>
-                <th>Submitted answer</th>
-                <th>Points</th>
+                <th> Exam </th>
+                <th>Student</th>
+                <th> Score </th>
                 <!-- <th> Random questions </th>  -->
             </tr>
             </thead>
             <tbody>
-            {% for answer in answers %}
+            {% for exam in exams %}
                 <tr>
-                    <td> {{ answer.question.name }}</td>
-                    <td> {{ answer.answer.name }}</td>
-                    <td> {% if answer.answer.correct== true %} 1 {% else %} O {% endif %}</td>
+                    <td> {{ exam.exam.field.name }}- {{ exam.exam.name }}</td>
+                    <td> {{exam.student.username}} </td>
+                    <td>
+                        {% if exam.status == false %}
+                                not completed
+                        {% else %}
+                            {{ (exam.result*100) | round }} % <a href="{{ path('viewResult', {'eId':  exam.exam.id} ) }}"> <br> details</a>
+                        {% endif %}
+                    </td>
                 </tr>
             {% endfor %}
+
+
 
             </tbody>
         </table>
     </div>
+
 
 {% endblock %}
 

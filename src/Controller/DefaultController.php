@@ -3,6 +3,7 @@
 namespace App\Controller;
 use App\Entity\Answer;
 use App\Entity\Exam;
+use App\Entity\ExamAll;
 use App\Entity\Field;
 use App\Entity\Question;
 use App\Entity\StudentA;
@@ -159,6 +160,20 @@ class DefaultController extends AbstractController
             return $this->redirectToRoute('createExam');
         }
 
+        if ($exam->getStudent()== null)
+        {
+            foreach ($students as $student)
+            {
+                $each= new ExamAll();
+                $each->setExam($exam);
+                $each->setStudent($student);
+                $each->setStatus(false);
+                $entityManager= $this->getDoctrine()->getManager();
+                $entityManager->persist($each);
+                $entityManager->flush();
+            }
+        }
+
         return $this->render('examQuestion.html.twig',
             array('questions' => $exam,
                 'addQuestionForm' => $form->createView())
@@ -168,15 +183,21 @@ class DefaultController extends AbstractController
     public function student()
     {
         $exams = $this->getUser()->getExamStudents();
-        #     $examsNull= $this->getDoctrine()->getRepository(Exam::class)->findBy('student'=> 'null');
-
+        $everyExam= $this->getUser()->getExamAlls();
+        #ked zmenim null (dafult) na konkretneho studenta, ostane to tam
         return $this->render('student.html.twig',
-            array('exams' => $exams));
+            array('exams' => $exams,
+                'everyExam'=>$everyExam));
     }
 
     public function takeExam($eId)
     {
         $exam = $this->getDoctrine()->getRepository(Exam::class)->find($eId);
+        if ($exam->getStudent()== null) {
+            $exam= $this->getDoctrine()->getRepository(ExamAll::class)->findOneBy(
+                ['exam'=>$eId, 'student'=> $this->getUser()]);
+        }
+
         $entityManager = $this->getDoctrine()->getManager();
         $exam->setStatus(true);
         $entityManager->flush();
@@ -192,14 +213,15 @@ class DefaultController extends AbstractController
 
     public function submitAnswers(Request $request, $eId)
     {
-
         $request = Request::createFromGlobals()->request->all();
         $exam= $this->getDoctrine()->getRepository(Exam::class)->find($eId);
+        if ($exam->getStudent()== null) {
+            $exam= $this->getDoctrine()->getRepository(ExamAll::class)->findOneBy(
+                ['exam'=>$eId, 'student'=> $this->getUser()]);
+        }
         $result=('0');
         $count=('0');
         $entityManager = $this->getDoctrine()->getManager();
-
-
 
         foreach ($request as $questionId => $answerId){
 
@@ -211,7 +233,7 @@ class DefaultController extends AbstractController
             $studentAnswer->setAnswer($answer);
             $correct= $answer->getCorrect();
             if ($correct==true) $result++;
-            $studentAnswer->setExam($exam);
+            $studentAnswer->setExam($exam->getExam());
             $studentAnswer->setQuestion($question);
             $entityManager->persist($studentAnswer);
             $count++;
@@ -222,18 +244,28 @@ class DefaultController extends AbstractController
         $exam->setResult($result/$count);
         $entityManager->flush();
 
-        return $this->render('student.html.twig');
+        return $this->render('completed.html.twig');
 
     }
 
     public function teacherResult()
     {
         $teacher= $this->getUser()->getId();
-        $exams= $this->getDoctrine()->getRepository(Exam::class)->findBy(['teacher'=>$this->getUser()]);
+        $exams= $this->getDoctrine()->getRepository(Exam::class)->findBy([
+            'teacher'=>$this->getUser()]);
 
 
         return $this->render('TResults.html.twig',
-            array('exams' => $exams ));
+                array('exams' => $exams));
+    }
+
+    public function detailedResult($eId)
+    {
+        $exams= $this->getDoctrine()->getRepository(ExamAll::class)->findBy(['exam'=>$eId]);
+
+
+        return $this->render('detailedResult.html.twig',
+            array('exams' => $exams));
     }
 
     public function viewResult($eId)
