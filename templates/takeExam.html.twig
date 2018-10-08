@@ -2,12 +2,11 @@
 
 {% block body %}
 
-        <h2> {{ exam.field.name }} - {{ exam.name }}</h2>
-        <form method="post" action="{{ path("submitAnswers",{'eId': exam.id}) }}">
-
+    <h2> {{ exam.field.name }} - {{ exam.name }} </h2>
+    <form method="post" action="{{ path("submitAnswers",{'eId': exam.id}) }}">
     <div>
         {% for question in questions %}
-          <h3> {{ question.name }} </h3>
+          <h4> {{ question.name }} </h4>
             <div>
                 {% for answer in question.answers %}
 

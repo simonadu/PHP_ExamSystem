@@ -47,11 +47,6 @@ teacherResult:
     path: /teacher/result/
     controller: App\Controller\DefaultController::teacherResult
 
-detailedResult:
-    path: /teacher/result/detailed/{eId}
-    controller: App\Controller\DefaultController::detailedResult
-
-
 viewResult:
     path: /common/view/{eId}
     controller: App\Controller\DefaultController::viewResult

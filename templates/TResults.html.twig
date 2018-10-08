@@ -25,26 +25,17 @@
             {% for exam in exams %}
                 <tr>
                     <td>{{ exam.name  }} </td>
-                    <td> {% if exam.student==null %} for all students
-                        {% else %} {{ exam.student.username }}
-                        {% endif %}</td>
+                    <td>{{ exam.student.username}} </td>
                     <td>
                         {% if exam.status == false %}
-                            {% if exam.student==null %}
-                              <a href="{{ path('detailedResult', {'eId': exam.id} ) }}">
-                                  results
-                              </a>
-                            {% else %}
-                                not completed
-                            {% endif %}
+                            not completed
                         {% else %}
-                           {{ (exam.result*100) | round }} % <a href="{{ path('viewResult', {'eId': exam.id} ) }}"> <br> details</a>
+                            {{ (exam.result*100) | round }} %
+                            <a href="{{ path('viewResult', {'eId': exam.id} ) }}"> <br> details</a>
                         {% endif %}
                     </td>
                 </tr>
             {% endfor %}
-
-
 
             </tbody>
         </table>

@@ -29,25 +29,8 @@
                         {% else %}
                             {{ (exam.result*100) | round }} % <a href="{{ path('viewResult', {'eId': exam.id} ) }}"> <br> details</a>
                         {% endif %}
-                    </td>
                 </tr>
             {% endfor %}
-            {% for test in everyExam %}
-                <tr>
-                    <td> {{ test.exam.field.name }}</td>
-                    <td> {{ test.exam.name}}</td>
-                    <td> {% if test.status == false %}
-                            <a href="{{ path('takeExam', {'eId': test.exam.id}) }}">take exam</a>
-                        {% else %}
-                            {{ (test.result*100) | round }} % <a href="{{ path('viewResult', {'eId': test.exam.id} ) }}"> <br> details</a>
-                        {% endif %}
-                    </td>
-                </tr>
-            {% endfor %}
-
-
-
-                </tr>
 
             </tbody>
         </table>
