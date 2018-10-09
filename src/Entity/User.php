@@ -54,12 +54,18 @@ class User implements UserInterface
      */
     private $studentAs;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\ExamsForAll", mappedBy="student")
+     */
+    private $examsForAlls;
+
     public function __construct()
     {
         $this->questions = new ArrayCollection();
         $this->exams = new ArrayCollection();
         $this->examStudents = new ArrayCollection();
         $this->studentAs = new ArrayCollection();
+        $this->examsForAlls = new ArrayCollection();
     }
 
 
@@ -242,6 +248,37 @@ class User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($studentA->getStudent() === $this) {
                 $studentA->setStudent(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ExamsForAll[]
+     */
+    public function getExamsForAlls(): Collection
+    {
+        return $this->examsForAlls;
+    }
+
+    public function addExamsForAll(ExamsForAll $examsForAll): self
+    {
+        if (!$this->examsForAlls->contains($examsForAll)) {
+            $this->examsForAlls[] = $examsForAll;
+            $examsForAll->setStudent($this);
+        }
+
+        return $this;
+    }
+
+    public function removeExamsForAll(ExamsForAll $examsForAll): self
+    {
+        if ($this->examsForAlls->contains($examsForAll)) {
+            $this->examsForAlls->removeElement($examsForAll);
+            // set the owning side to null (unless already changed)
+            if ($examsForAll->getStudent() === $this) {
+                $examsForAll->setStudent(null);
             }
         }
 

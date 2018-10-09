@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <ul>
+        <li><a class="active" href="{{ path('teacher') }}">Teacher</a></li>
+        <li><a href="{{ path('createQuestion') }}"> Questions </a></li>
+        <li><a href="{{ path('createExam') }}"> Exams </a> </li>
+        <li><a href="{{ path('teacherResult') }}">Results</a></li>
+        <li style="float:right"><a href="{{ path('logout') }}">Log out</a></li>
+    </ul>
+
+    <h2> Results</h2>
+    <h3>  {{ exam.field.name }}- {{ exam.name }} </h3>
+    <div>
+        <table id="customers">
+            <thead>
+            <tr>
+                <th>Student</th>
+                <th> Score </th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for exam in exams %}
+                <tr>
+                    <td>
+                        {{ exam.student.username}}
+                    </td>
+                    <td>
+                        {% if exam.status == false %}
+                            not completed
+                        {% else %}
+                            {{ (exam.result*100) | round }} %
+                            <a href="{{ path('viewDetailedResult', {'eId': exam.id} ) }}"> <br> details</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+
+
+{% endblock %}
+
+

@@ -3,17 +3,21 @@
 {% block body %}
 
     <ul>
-        <li><a href="{{ path('student') }}"> Student </a> </li>
+        <li><a class="active" href="{{ path('teacher') }}">Teacher</a></li>
+        <li><a href="{{ path('createQuestion') }}"> Questions </a></li>
+        <li><a href="{{ path('createExam') }}"> Exams </a> </li>
+        <li><a href="{{ path('teacherResult') }}">Results</a></li>
         <li style="float:right"><a href="{{ path('logout') }}">Log out</a></li>
     </ul>
 
     <h2> Results </h2>
+    <h3> {{ exam.exam.field.name }}- {{ exam.exam.name }}- {{ exam.student.username }}</h3>
     <div>
         <table id="customers">
             <thead>
             <tr>
                 <th>Question</th>
-                <th>Your answer</th>
+                <th> {{ exam.student.username }}'s answer</th>
                 <th>Points</th>
                 <!-- <th> Random questions </th>  -->
             </tr>

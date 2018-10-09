@@ -2,18 +2,20 @@
 
 {% block body %}
 
-    <h2> {{ exam.field.name }} - {{ exam.name }} </h2>
+
+    <h2>{{ exam.field.name }} - {{ exam.name }} </h2>
     <form method="post" action="{{ path("submitAnswers",{'eId': exam.id}) }}">
     <div>
         {% for question in questions %}
-          <h4> {{ question.name }} </h4>
+          <h3> {{ question.name }} </h3>
             <div>
                 {% for answer in question.answers %}
 
                     <label>
-                    <input type="radio" name="{{question.id}}"  value="{{answer.id}}" required>
-                   {{ answer.name }}
+                        <input type="radio" name="{{question.id}}"  value="{{answer.id}}" required>
+                        {{ answer.name }}
                     </label>
+
                     <br>
 
                 {% endfor %}

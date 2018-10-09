@@ -38,14 +38,29 @@ takeExam:
     path: /student/takeExam/{eId}
     controller: App\Controller\DefaultController::takeExam
 
+takeAllExam:
+    path: /student/takeExam/forEveryone/{tId}
+    controller: App\Controller\DefaultController::takeAllExam
 
 submitAnswers:
     path: /student/submitAnswers/{eId}
     controller: App\Controller\DefaultController::submitAnswers
 
+submitAllAnswers:
+    path: /student/submitAnswers/all/{eId}
+    controller: App\Controller\DefaultController::submitAllAnswers
+
 teacherResult:
     path: /teacher/result/
     controller: App\Controller\DefaultController::teacherResult
+
+detailedResults:
+    path: /teacher/result/detailed/{eId}
+    controller: App\Controller\DefaultController::detailedResults
+
+viewDetailedResult:
+    path: /teacher/result/detailed/view/{eId}
+    controller: App\Controller\DefaultController::viewDetailedResult
 
 viewResult:
     path: /common/view/{eId}

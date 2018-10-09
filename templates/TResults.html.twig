@@ -23,18 +23,32 @@
             </thead>
             <tbody>
             {% for exam in exams %}
-                <tr>
-                    <td>{{ exam.name  }} </td>
-                    <td>{{ exam.student.username}} </td>
-                    <td>
-                        {% if exam.status == false %}
-                            not completed
-                        {% else %}
-                            {{ (exam.result*100) | round }} %
-                            <a href="{{ path('viewResult', {'eId': exam.id} ) }}"> <br> details</a>
-                        {% endif %}
-                    </td>
-                </tr>
+                {% if exam.student == null %}
+                    <tr>
+                        <td>{{ exam.name  }} </td>
+                        <td>
+                            exam for all students
+                        </td>
+                        <td>
+                            <a href="{{ path ('detailedResults', {'eId': exam.id}) }}"> results </a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td>{{ exam.name  }} </td>
+                        <td>
+                            {{ exam.student.username}}
+                        </td>
+                        <td>
+                            {% if exam.status == false %}
+                                not completed
+                            {% else %}
+                                {{ (exam.result*100) | round }} %
+                                <a href="{{ path('viewResult', {'eId': exam.id} ) }}"> <br> details</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endif %}
             {% endfor %}
 
             </tbody>

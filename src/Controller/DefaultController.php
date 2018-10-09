@@ -3,6 +3,7 @@
 namespace App\Controller;
 use App\Entity\Answer;
 use App\Entity\Exam;
+use App\Entity\ExamsForAll;
 use App\Entity\Field;
 use App\Entity\Question;
 use App\Entity\StudentA;
@@ -99,18 +100,40 @@ class DefaultController extends AbstractController
     public function createExam(Request $request)
     {
         $newExam = new Exam();
+        $students = $this->getDoctrine()->getRepository(User::class)->findBy(array('level' => 0));
         $form = $this->createFormBuilder($newExam)
             ->add('field', EntityType::class,
                 array('class' => Field::class,
                     'choice_label' => 'name'))
             ->add('name', TextType::class,
                 array('label' => 'Exam description'))
+            ->add('student', EntityType::class,
+                array(
+                    'choices' => $students,
+                    'placeholder' => 'All',
+                    'required' => false,
+                    'label' => 'Exam for',
+                    'class' => User::class,
+                    'choice_label' => 'username'))
             ->add('save', SubmitType::class, array('label' => 'Add'))
             ->getForm();
         $form->handleRequest($request);
 
         if ($form->isSubmitted()) {
             $newExam = $form->getData();
+            if ($newExam->getStudent()==null)
+            {
+                foreach ($students as $student)
+                {
+                    $all= new ExamsForAll();
+                    $all->setExam($newExam);
+                    $all->setStudent($student);
+                    $all->setStatus(false);
+                    $entityManager = $this->getDoctrine()->getManager();
+                    $entityManager->persist($all);
+                }
+
+            }
             $newExam->setTeacher($this->getUser());
             $newExam->setStatus(false);
             $newExam->setResult(null);
@@ -130,7 +153,6 @@ class DefaultController extends AbstractController
     public function examQuestion(Request $request, $eId)
     {
         $exam = $this->getDoctrine()->getRepository(Exam::class)->find($eId);
-        $students = $this->getDoctrine()->getRepository(User::class)->findBy(array('level' => 0));
 
         $form = $this->createFormBuilder($exam)
             ->add('questions', EntityType::class, array(
@@ -138,14 +160,6 @@ class DefaultController extends AbstractController
                 'choices' => $exam->getField()->getQuestions(),
                 'expanded' => true, 'multiple' => true,
             ))
-            ->add('student', EntityType::class,
-                array(
-                    'choices' => $students,
-                    'placeholder' => 'All',
-                    'required' => false,
-                    'label' => 'Exam for',
-                    'class' => User::class,
-                    'choice_label' => 'username'))
             ->add('save', SubmitType::class, array('label' => 'Add'))
             ->getForm();
         $form->handleRequest($request);
@@ -170,8 +184,11 @@ class DefaultController extends AbstractController
         $exams = $this->getUser()->getExamStudents();
         #     $examsNull= $this->getDoctrine()->getRepository(Exam::class)->findBy('student'=> 'null');
 
+        $tests= $this->getUser()->getExamsForAlls();
+
         return $this->render('student.html.twig',
-            array('exams' => $exams));
+            array('exams' => $exams,
+                'tests'=>$tests));
     }
 
     public function takeExam($eId)
@@ -188,6 +205,20 @@ class DefaultController extends AbstractController
                 'exam'=>$exam)
         );
 
+    }
+
+    public function takeAllExam($tId)
+    {
+        $exam = $this->getDoctrine()->getRepository(ExamsForAll::class)->find($tId);
+        $entityManager = $this->getDoctrine()->getManager();
+        $exam->setStatus(true);
+        $entityManager->flush();
+
+        $questions = $exam->getExam()->getQuestions();
+
+        return $this->render('takeAllExam.html.twig',
+            array('questions' => $questions,
+                'exam'=>$exam));
     }
 
     public function submitAnswers(Request $request, $eId)
@@ -222,18 +253,62 @@ class DefaultController extends AbstractController
         $exam->setResult($result/$count);
         $entityManager->flush();
 
-        return $this->render('student.html.twig');
+        return $this->render('submited.html.twig');
 
     }
+
+    public function submitAllAnswers(Request $request, $eId)
+    {
+        $request = Request::createFromGlobals()->request->all();
+        $exam= $this->getDoctrine()->getRepository(ExamsForAll::class)->find($eId);
+        $result=('0');
+        $count=('0');
+        $entityManager = $this->getDoctrine()->getManager();
+
+        foreach ($request as $questionId => $answerId){
+
+            $question= $this->getDoctrine()->getRepository(Question::class)->find($questionId);
+            $answer= $this->getDoctrine()->getRepository(Answer::class)->find($answerId);
+
+            $studentAnswer= new StudentA();
+            $studentAnswer->setStudent($this->getUser());
+            $studentAnswer->setAnswer($answer);
+            $correct= $answer->getCorrect();
+            if ($correct==true) $result++;
+            $studentAnswer->setExam($exam->getExam());
+            $studentAnswer->setQuestion($question);
+            $entityManager->persist($studentAnswer);
+            $count++;
+            $entityManager->flush();
+        }
+
+        $entityManager->flush();
+        $entityManager = $this->getDoctrine()->getManager();
+        $exam->setResult($result/$count);
+        $entityManager->flush();
+
+        return $this->render('submited.html.twig');
+
+    }
+
 
     public function teacherResult()
     {
         $teacher= $this->getUser()->getId();
         $exams= $this->getDoctrine()->getRepository(Exam::class)->findBy(['teacher'=>$this->getUser()]);
 
-
         return $this->render('TResults.html.twig',
             array('exams' => $exams ));
+    }
+
+    public function detailedResults($eId)
+    {
+        $exam = $this->getDoctrine()->getRepository(Exam::class)->find($eId);
+        $exams= $this->getDoctrine()->getRepository(ExamsForAll::class)->findBy(['exam'=>$exam]);
+
+        return $this->render('TAllResults.html.twig',
+            array('exam'=>$exam,
+                'exams' => $exams ));
     }
 
     public function viewResult($eId)
@@ -253,6 +328,16 @@ class DefaultController extends AbstractController
                 array('answers' => $answers,
                     'exam' => $exam));
         }
+    }
+
+    public function viewDetailedResult($eId)
+    {
+        $exam=$this->getDoctrine()->getRepository(ExamsForAll::class)->find($eId);
+        $id= $exam->getExam();
+        $answers = $this->getDoctrine()->getRepository(StudentA::class)->findBy(['exam'=>$id]);
+
+        return $this->render('viewDetailedResult.html.twig',
+            array('answers' => $answers, 'exam' => $exam));
     }
 
 /**

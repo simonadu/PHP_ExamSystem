@@ -7,7 +7,8 @@
         <li style="float:right"><a href="{{ path('logout') }}">Log out</a></li>
     </ul>
 
-    <h2> available exams </h2>
+    <h2> Exams only for you</h2>
+    <br>
     <div>
         <table id="customers">
             <thead>
@@ -28,6 +29,36 @@
                             <a href="{{ path('takeExam', {'eId': exam.id}) }}">take exam</a>
                         {% else %}
                             {{ (exam.result*100) | round }} % <a href="{{ path('viewResult', {'eId': exam.id} ) }}"> <br> details</a>
+                        {% endif %}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <tbody>
+
+    <h2> Exams for everyone</h2>
+    <br>
+    <div>
+        <table id="customers">
+            <thead>
+            <tr>
+                <th>Field</th>
+                <th>Description</th>
+                <th>Status </th>
+                <!-- <th> Random questions </th>  -->
+            </tr>
+            </thead>
+            <tbody>
+            {% for test in tests %}
+                <tr>
+                    <td>{{ test.exam.field.name  }} </td>
+                    <td>{{ test.exam.name }} </td>
+                    <td>
+                        {% if test.status == false %}
+                            <a href="{{path('takeAllExam', {'tId': test.id}) }}"> take exam (for all)</a>
+                        {% else %}
+                            {{ (test.result*100) | round }} % <a href="{{ path('viewResult', {'eId': test.exam.id} ) }}"> <br> details</a>
                         {% endif %}
                 </tr>
             {% endfor %}
