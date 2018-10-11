@@ -344,24 +344,33 @@ class DefaultController extends AbstractController
             array('answers' => $answers, 'exam' => $exam));
     }
 
-/**
+
    public function randomSelection(ObjectManager $manager, Request $request, $eId)
     {
 
-        $number = $request->getContent();
+        /*$number = $request->getContent();*/
+        $number= 2;
         $exam= $this->getDoctrine()->getRepository(Exam::class)->find($eId);
-        $choices= [$exam->getField()->getQuestions()];
+        $questions= $exam->getField()->getQuestions();
+        $choices=[];
+        $i=0;
+        foreach ($questions as $question)
+        {
+            $choices[$i]=$question->getId();
+            $i++;
+        }
         shuffle($choices);
+
         for($i = 0; $i < $number; $i++)
         {
-            $exam->addQuestion($choices[$i]);
+            $q= $this->getDoctrine()->getRepository(Question::class)->find($choices[$i]);
+            $exam->addQuestion($q);
             $manager->persist($exam);
         }
         $manager->flush();
 
         return $this->render('randomQuestion.html.twig');
     }
-   */
 
 
 }

@@ -2,10 +2,13 @@
 
 {% block body %}
 
-    <div>
-        <a href="{{ path('teacher') }}"> << Back </a>
-    </div>
-
+    <ul>
+        <li><a class="active" href="{{ path('teacher') }}">Teacher</a></li>
+        <li><a href="{{ path('createQuestion') }}"> Questions </a></li>
+        <li><a href="{{ path('createExam') }}"> Exams </a> </li>
+        <li><a href="{{ path('teacherResult') }}">Results</a></li>
+        <li style="float:right"><a href="{{ path('logout') }}">Log out</a></li>
+    </ul>
 
     <h2> random questions </h2>
 

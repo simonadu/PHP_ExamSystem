@@ -37,7 +37,10 @@
                 <tr>
                     <td>{{ exam.field.name  }} </td>
                     <td>{{ exam.name }} </td>
-                    <td> <a href="{{ path('examQuestion', {'eId': exam.id}) }}">Edit exam</a> </td>
+                    <td>
+                        <a href="{{ path('examQuestion', {'eId': exam.id}) }}">Edit exam</a>
+                        <a href="{{ path('randomSelection', {'eId': exam.id}) }}"> random exam </a>
+                    </td>
                   <!--  <td>
                         Select random questions =>
                         <form action="{{ path('randomSelection', {'eId': exam.id}) }}" method="post">
