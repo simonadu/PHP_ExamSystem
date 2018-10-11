@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <ul>
+        <li><a href="{{ path('teacher')}}">Teacher</a></li>
+        <li><a href="{{ path('createQuestion') }}"> Questions </a></li>
+        <li><a href="{{ path('createExam') }}"> Exams </a> </li>
+        <li><a href="{{ path('teacherResult') }}">Results</a></li>
+        <li style="float:right"><a href="{{ path('logout') }}">Log out</a></li>
+
+    </ul>
+
+    <h2>generate random questions </h2>
+    <h3>{{ exam.field.name }}- '{{ exam.name }}'</h3>
+    <form action="{{ path('randomSelection', {'eId': exam.id}) }}" method="post">
+        <label>    number of questions: </label>
+        <input  type="number" name="number" id="number" min="1" max="{{ questions|length }}">
+        <button type="submit">Generate</button>
+    </form>
+{% endblock %}

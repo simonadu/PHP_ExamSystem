@@ -5,7 +5,7 @@
 
     <h2>{{ exam.field.name }} - {{ exam.name }} </h2>
     <form method="post" action="{{ path("submitAnswers",{'eId': exam.id}) }}">
-    <div>
+    <div >
         {% for question in questions %}
           <h3> {{ question.name }} </h3>
             <div>
@@ -15,8 +15,6 @@
                         <input type="radio" name="{{question.id}}"  value="{{answer.id}}" required>
                         {{ answer.name }}
                     </label>
-
-                    <br>
 
                 {% endfor %}
             </div>

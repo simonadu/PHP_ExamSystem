@@ -15,6 +15,7 @@
         <table id="customers">
             <thead>
             <tr>
+                <th>Field</th>
                 <th>Exam</th>
                 <th>Student</th>
                 <th> Score </th>
@@ -25,6 +26,7 @@
             {% for exam in exams %}
                 {% if exam.student == null %}
                     <tr>
+                        <td> {{ exam.field.name }}</td>
                         <td>{{ exam.name  }} </td>
                         <td>
                             exam for all students
@@ -35,6 +37,7 @@
                     </tr>
                 {% else %}
                     <tr>
+                        <td> {{ exam.field.name }}</td>
                         <td>{{ exam.name  }} </td>
                         <td>
                             {{ exam.student.username}}
@@ -44,7 +47,7 @@
                                 not completed
                             {% else %}
                                 {{ (exam.result*100) | round }} %
-                                <a href="{{ path('viewResult', {'eId': exam.id} ) }}"> <br> details</a>
+                                <a href="{{ path('viewResult', {'eId': exam.id} ) }}"> details</a>
                             {% endif %}
                         </td>
                     </tr>

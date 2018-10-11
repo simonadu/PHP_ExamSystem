@@ -133,7 +133,6 @@ class DefaultController extends AbstractController
                     $entityManager = $this->getDoctrine()->getManager();
                     $entityManager->persist($all);
                 }
-
             }
             $newExam->setTeacher($this->getUser());
             $newExam->setStatus(false);
@@ -146,9 +145,52 @@ class DefaultController extends AbstractController
         }
 
         $exams = $this->getUser()->getExams();
+        $questions= $this->getDoctrine()->getRepository(Question::class)->findBy(
+            ['teacher'=> $this->getUser()]);
         return $this->render('createExam.html.twig',
             array('exams' => $exams,
+                'questions'=>$questions,
                 'addExamForm' => $form->createView()));
+    }
+
+    public function randomExam($eId)
+    {
+        $exam= $this->getDoctrine()->getRepository(Exam::class)->find($eId);
+        $field= $exam->getField();
+        $questions= $this->getDoctrine()->getRepository(Question::class)->findBy(
+            ['teacher'=> $this->getUser(),
+                'field'=>$field]);
+
+        return $this->render('randomExam.html.twig',
+            array('exam' => $exam,
+                'questions'=>$questions));
+    }
+
+
+    public function randomSelection(ObjectManager $manager, Request $request, $eId)
+    {
+        $number = (int)Request::createFromGlobals()->request->get("number");
+
+        $exam= $this->getDoctrine()->getRepository(Exam::class)->find($eId);
+        $questions= $exam->getField()->getQuestions();
+        $choices=[];
+        $i=0;
+        foreach ($questions as $question)
+        {
+            $choices[$i]=$question->getId();
+            $i++;
+        }
+        shuffle($choices);
+
+        for($i = 0; $i < $number; $i++)
+        {
+            $q= $this->getDoctrine()->getRepository(Question::class)->find($choices[$i]);
+            $exam->addQuestion($q);
+            $manager->persist($exam);
+        }
+        $manager->flush();
+
+        return $this->render('randomQuestion.html.twig', array ('number'=> $number));
     }
 
     public function examQuestion(Request $request, $eId)
@@ -181,6 +223,16 @@ class DefaultController extends AbstractController
                 'exam'=>$exam,
                 'addQuestionForm' => $form->createView())
         );
+    }
+    
+    public function viewQuestion($eId)
+    {
+        $exam = $this->getDoctrine()->getRepository(Exam::class)->find($eId);
+        $questions= $exam->getQuestions();
+
+        return $this->render('viewQuestion.html.twig',
+            array('questions' => $questions,
+                'exam' => $exam));
     }
 
     public function student()
@@ -344,33 +396,6 @@ class DefaultController extends AbstractController
             array('answers' => $answers, 'exam' => $exam));
     }
 
-
-   public function randomSelection(ObjectManager $manager, Request $request, $eId)
-    {
-
-        /*$number = $request->getContent();*/
-        $number= 2;
-        $exam= $this->getDoctrine()->getRepository(Exam::class)->find($eId);
-        $questions= $exam->getField()->getQuestions();
-        $choices=[];
-        $i=0;
-        foreach ($questions as $question)
-        {
-            $choices[$i]=$question->getId();
-            $i++;
-        }
-        shuffle($choices);
-
-        for($i = 0; $i < $number; $i++)
-        {
-            $q= $this->getDoctrine()->getRepository(Question::class)->find($choices[$i]);
-            $exam->addQuestion($q);
-            $manager->persist($exam);
-        }
-        $manager->flush();
-
-        return $this->render('randomQuestion.html.twig');
-    }
 
 
 }

@@ -31,7 +31,7 @@
                             not completed
                         {% else %}
                             {{ (exam.result*100) | round }} %
-                            <a href="{{ path('viewDetailedResult', {'eId': exam.id} ) }}"> <br> details</a>
+                            <a href="{{ path('viewDetailedResult', {'eId': exam.id} ) }}">  details</a>
                         {% endif %}
                     </td>
                 </tr>

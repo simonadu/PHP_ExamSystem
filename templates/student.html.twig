@@ -56,7 +56,7 @@
                     <td>{{ test.exam.name }} </td>
                     <td>
                         {% if test.status == false %}
-                            <a href="{{path('takeAllExam', {'tId': test.id}) }}"> take exam (for all)</a>
+                            <a href="{{path('takeAllExam', {'tId': test.id}) }}"> take exam </a>
                         {% else %}
                             {{ (test.result*100) | round }} % <a href="{{ path('viewResult', {'eId': test.exam.id} ) }}"> <br> details</a>
                         {% endif %}

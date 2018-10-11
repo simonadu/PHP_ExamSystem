@@ -22,9 +22,18 @@ examQuestion:
     path: /teacher/exams/question/{eId}
     controller: App\Controller\DefaultController::examQuestion
 
+randomExam:
+    path: /teacher/exams/random/{eId}
+    controller: App\Controller\DefaultController::randomExam
+
 randomSelection:
     path: /teacher/exams/random/selection/{eId}
     controller: App\Controller\DefaultController::randomSelection
+
+viewQuestion:
+    path: /teacher/exams/random/view/exam/{eId}
+    controller: App\Controller\DefaultController::viewQuestion
+
 
 routeLevelControl:
     path: /routeLevelControl

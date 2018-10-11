@@ -38,16 +38,22 @@
                     <td>{{ exam.field.name  }} </td>
                     <td>{{ exam.name }} </td>
                     <td>
-                        <a href="{{ path('examQuestion', {'eId': exam.id}) }}">Edit exam</a>
-                        <a href="{{ path('randomSelection', {'eId': exam.id}) }}"> random exam </a>
+                        {% if exam.questions|length %}
+                            <a href="{{ path ('viewQuestion', {'eId': exam.id}) }}"> view selected questions</a>
+                        {% else %}
+                            <a href="{{ path('examQuestion', {'eId': exam.id}) }}">select questions</a>
+                            |
+                            <a href="{{ path('randomExam', {'eId': exam.id}) }}">random</a>
+
+                         {#   <form action="{{ path('randomSelection', {'eId': exam.id}) }}" method="post">
+                                <input type="number" name="number" id="number" min="1" max="{{ questions|length }}">
+                                <button type="submit">questions</button>
+                            </form>
+                           #}
+                        {% endif %}
                     </td>
                   <!--  <td>
-                        Select random questions =>
-                        <form action="{{ path('randomSelection', {'eId': exam.id}) }}" method="post">
-                            number
-                            <input type="number" name="randomNumber" id="number">
-                            <button type="submit">Generate</button>
-                        </form>
+
                     </td>
                  -->
                 </tr>
