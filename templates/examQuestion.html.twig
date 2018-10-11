@@ -1,4 +1,5 @@
 {% extends 'base.html.twig' %}
+{% form_theme addQuestionForm 'examWidget.html.twig' %}
 
 {% block body %}
 
@@ -11,15 +12,17 @@
         <li style="float:right"><a href="{{ path('logout') }}">Log out</a></li>
     </ul>
 
-    <h2> Choose questions </h2>
+    <h2> Choose questions for ' {{ exam.name}} ' exam</h2>
+    <div class="questions">
 
-    <div>
-        {{ form_start(addQuestionForm) }}
-        {{ form_widget(addQuestionForm) }}
-        {{ form_end(addQuestionForm) }}
+        <div>
+            {{ form_start(addQuestionForm) }}
+            {{ form_widget(addQuestionForm) }}
+            {{ form_end(addQuestionForm) }}
+        </div>
+
+        <br>
     </div>
-
-    <br>
 
 
 {% endblock %}

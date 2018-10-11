@@ -94,6 +94,7 @@ class DefaultController extends AbstractController
         $answers = $question->getAnswers();
         return $this->render('createAnswer.html.twig',
             array('answers' => $answers,
+                'question'=> $question,
                 'addAnswerForm' => $form->createView()));
     }
 
@@ -155,7 +156,9 @@ class DefaultController extends AbstractController
         $exam = $this->getDoctrine()->getRepository(Exam::class)->find($eId);
 
         $form = $this->createFormBuilder($exam)
-            ->add('questions', EntityType::class, array(
+            ->add('questions', EntityType::class,
+                array(
+                'label'=> false,
                 'class' => Question::class, 'choice_label' => 'name',
                 'choices' => $exam->getField()->getQuestions(),
                 'expanded' => true, 'multiple' => true,
@@ -175,6 +178,7 @@ class DefaultController extends AbstractController
 
         return $this->render('examQuestion.html.twig',
             array('questions' => $exam,
+                'exam'=>$exam,
                 'addQuestionForm' => $form->createView())
         );
     }
