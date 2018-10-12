@@ -1,6 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+    <title>{% block title %} Student | Exam App {% endblock %}</title>
 
     <ul>
         <li><a href="{{ path('student') }}"> Student </a> </li>
@@ -21,6 +22,7 @@
             </thead>
             <tbody>
             {% for exam in exams %}
+                {% if exam.questions|length %}
                 <tr>
                     <td>{{ exam.field.name  }} </td>
                     <td>{{ exam.name }} </td>
@@ -31,6 +33,7 @@
                             {{ (exam.result*100) | round }} % <a href="{{ path('viewResult', {'eId': exam.id} ) }}"> <br> details</a>
                         {% endif %}
                 </tr>
+                {% endif %}
             {% endfor %}
             </tbody>
         </table>
@@ -51,6 +54,7 @@
             </thead>
             <tbody>
             {% for test in tests %}
+                {% if test.exam.questions|length %}
                 <tr>
                     <td>{{ test.exam.field.name  }} </td>
                     <td>{{ test.exam.name }} </td>
@@ -61,6 +65,7 @@
                             {{ (test.result*100) | round }} % <a href="{{ path('viewResult', {'eId': test.exam.id} ) }}"> <br> details</a>
                         {% endif %}
                 </tr>
+                {% endif %}
             {% endfor %}
 
             </tbody>

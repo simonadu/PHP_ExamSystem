@@ -1,6 +1,8 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+    <title>{% block title %} Answers | Exam App {% endblock %}</title>
+
 
     <ul>
         <li><a class="active" href="{{ path('teacher') }}">Teacher</a></li>

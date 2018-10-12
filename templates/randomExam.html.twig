@@ -1,6 +1,9 @@
 {% extends 'base.html.twig' %}
 
+
 {% block body %}
+    <title>{% block title %} Random Exam | Exam App {% endblock %}</title>
+
     <ul>
         <li><a href="{{ path('teacher')}}">Teacher</a></li>
         <li><a href="{{ path('createQuestion') }}"> Questions </a></li>

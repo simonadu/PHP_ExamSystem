@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-
+    <title>{% block title %} Login | Exam App {% endblock %}</title>
      <div class="container">
 
         <form action="{{ path('login') }}" method="POST">
