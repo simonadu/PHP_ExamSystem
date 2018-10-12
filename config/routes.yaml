@@ -34,6 +34,10 @@ viewQuestion:
     path: /teacher/exams/random/view/exam/{eId}
     controller: App\Controller\DefaultController::viewQuestion
 
+viewAnswers:
+    path: /teacher/exams/random/view/answers/{qId}
+    controller: App\Controller\DefaultController::viewAnswers
+
 
 routeLevelControl:
     path: /routeLevelControl

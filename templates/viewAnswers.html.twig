@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <title>{% block title %} Answers | Exam App {% endblock %}</title>
+
+    <ul>
+        <li><a class="active" href="{{ path('teacher') }}">Teacher</a></li>
+        <li><a href="{{ path('createQuestion') }}"> Questions </a></li>
+        <li><a href="{{ path('createExam') }}"> Exams </a> </li>
+        <li><a href="{{ path('teacherResult') }}">Results</a></li>
+        <li style="float:right"><a href="{{ path('logout') }}">Log out</a></li>
+    </ul>
+
+    <h2> Answers </h2>
+
+    <div>
+        <table id="customers">
+            <thead>
+            <tr>
+                <th>Answers to question '{{ question.name }}'  </th>
+                <th>Correctness </th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for answer in answers %}
+                <tr>
+                    <td> {{ answer.name }} </td>
+                    <td>
+                        {% if answer.correct== true %}
+                            correct
+                        {% else %}
+                            incorrect
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+
+
+{% endblock %}

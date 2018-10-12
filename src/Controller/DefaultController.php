@@ -235,6 +235,16 @@ class DefaultController extends AbstractController
                 'exam' => $exam));
     }
 
+    public function viewAnswers($qId)
+    {
+        $question = $this->getDoctrine()->getRepository(Question::class)->find($qId);
+        $answers=$question->getAnswers();
+
+        return $this->render('viewAnswers.html.twig',
+            array('answers' => $answers,
+                'question' => $question));
+    }
+
     public function student()
     {
         $exams = $this->getUser()->getExamStudents();

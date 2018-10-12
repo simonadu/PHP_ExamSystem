@@ -29,6 +29,7 @@
             <tr>
                 <th>Field</th>
                 <th>Description</th>
+                <th>Available to</th>
                 <th> Details </th>
                 <!-- <th> Random questions </th>  -->
             </tr>
@@ -38,6 +39,13 @@
                 <tr>
                     <td>{{ exam.field.name  }} </td>
                     <td>{{ exam.name }} </td>
+                    <td>
+                        {% if exam.student==null %}
+                            everyone
+                        {% else %}
+                            {{ exam.student.username }}
+                        {% endif %}
+                    </td>
                     <td>
                         {% if exam.questions|length %}
                             <a href="{{ path ('viewQuestion', {'eId': exam.id}) }}"> view selected questions</a>

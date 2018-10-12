@@ -39,7 +39,13 @@
                 <tr>
                     <td>{{ question.name }} </td>
                     <td>{{ question.field.name }} </td>
-                    <td><a href="{{ path('createAnswer', {'qId': question.id}) }}">Create answers</a> </td>
+                    <td>
+                        {% if question.answers|length %}
+                            <a href="{{ path('viewAnswers', {'qId': question.id}) }}">View answers</a>
+                        {% else %}
+                             <a href="{{ path('createAnswer', {'qId': question.id}) }}">Create answers</a>
+                        {% endif %}
+                    </td>
                 </tr>
             {% endfor %}
             </tbody>
